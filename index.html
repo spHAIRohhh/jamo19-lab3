@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>US Quiz</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" ></script>
+        <script>
+        /*global $*/
+        /*global index*/
+        /*global score*/
+        /*global q1Response*/
+        /*global q2Response*/
+        /*global _shuffle*/
+        /*global q3Response*/
+            $(document).ready(function(){
+                var score = 0;
+                //event LIsteners
+                $("button").on("click", gradeQuiz);
+                //functions
+                displayQ4Choices();
+                function displayQ4Choices(){
+                    let choices = ["Maine", "Rhode Island", "Vermont", "Connecticut"];
+                    
+                    // choices.forEach(function (i){
+                    //     $("choices").append(`<input id="${i}" type="radio" value="${i}"> <label for="${i}">States</label>`);
+                    
+                    choices = _shuffle(choices);    
+                        
+                    };
+                
+                function isFormValid(){
+                    let isValid = true;
+                    if ($("q1").val() == ""){
+                        isValid = false;
+                        $("#validationFdbk").html("Question 1 was not answered");
+                    }
+                    return isValid;
+                }
+                
+                
+                function rightAnswer(index){
+                    $("#q" + index + "Feedback").html("Correct!");
+                    $("#q" + index + "Feedback").attr("class", "bg-success text-white");
+                    $("#q" + index + "Feedback").html("<img src='img/checkmark.png'>");
+                    score += 20;
+                }
+                
+                function wrongAnswer(index){
+                    $(`#q${index}Feedback`).html("Incorrect!");
+                    $(`#q${index}Feedback`).attr("class", "bg-warning text-white");
+                    $(`#q${index}Feedback`).html("<img src='img/xmark.png' alt='xmark'>");
+                }
+                
+                function gradeQuiz(){
+                    
+                    $("#validationFdbk").html(""); //resets validation feedback
+                    
+                        if (!isFormValid()) {
+                            return;
+                        }
+                    
+                    //variables
+                    score = 0;
+                    let q1Response = $("#q1").val().toLowerCase();
+                    let q2Response = $("#q2").val();
+                    let q4Response = $("input[name=q4]:checked").val();
+                    //Question 1
+                    if (q1Response == "sacramento"){
+                        rightAnswer(1);
+                    }else {
+                        wrongAnswer(1);
+                    }
+                    //Question 2
+			        if(q2Response == "mo") {
+                       rightAnswer(2);
+			        }
+			        else {
+				        wrongAnswer(2);
+			        }
+			        //Question 3
+			        if($("#jefferson").is(":checked") && $("#roosevelt").is(":checked")
+			            && !$("jackson").is(":checked") && !$("#franklin").is(":checked")) {
+                        rightAnswer(3);
+			        }
+			        else {
+				        wrongAnswer(3);
+			        }
+			        //Question 4
+			        if(q4Response == "Rhode Island"){
+			            rightAnswer(4);
+			        }else {
+			            wrongAnswer(4);
+			        }
+                    
+                    $("#totalScore").html(`Total Score : ${score}`);
+                }//ready
+            });
+        </script>
+    
+    </head>
+    <body class="text-center">
+        <h1 class="jumbotron"> US Geography Quiz </h1>
+        <br><br>
+        <h3><span id="markImg1"></span> What is the Capital of California? </h3>
+        <input id="q1" type="text" value="sacramento">
+        <br>
+        <br>
+        <div id="q1Feedback"></div>
+        <br>
+        <h3><span is="markImg2"></span>What is the longest river?</h3>
+        <select id="q2">
+            <option value="">Select One</option>
+            <option value="mo">Missouri</option>
+            <option value="EG">Nile</option>
+            <option value="CA">Salinas</option>
+            <option value="MI">Mississippi</option>
+        </select>
+        <br>
+        <br>
+        <div id="q2Feedback"></div>
+        <br>
+        <br>
+        <h3><span id="markImg3"></span>What presidents are carved into Mount Rushmore?</h3>
+        <input id="roosevelt" type="checkbox">
+        <label for="roosevelt">T. Roosevelt</label>
+        <input id="jackson" type="checkbox">
+        <label for="jackson">A. Jackson</label>
+        <input id="franklin" type="checkbox">
+        <label for="franklin">B. Franklin</label>
+        <input id="jefferson" type="checkbox">
+        <label for="jefferson">T. Jefferson</label>
+        <br>
+        <br>
+        <div id="q3Feedback"></div>
+        <br>
+        <br>
+        <h3><span id="markImg4"></span>Which is the smallest US State?</h3>
+        <div id="choices"></div>
+        <!--<input id="me" type="radio" name="q4" value="Maine">-->
+        <!--<label for="me">Maine</label>-->
+        <!--<input id="ri" type="radio" name="q4" value="Rhode Island">-->
+        <!--<label for="ri">Rhode Island</label>-->
+        <!--<input id="vt" type="radio" name="q4" value="Vermont">-->
+        <!--<label for="vt">Vermont</label>-->
+        <!--<input id="ct" type="radio" name="q4" value="Connecticut">-->
+        <!--<label for="ct">Connecticut</label>-->
+        <br>
+        <br>
+        <div id="q4Feedback"></div>
+        <br>
+        <br>
+        <h3 id="validationFdbk" class="bg-danger text-white"></h3>
+        <button class="btn btn-outline-success"> Submit Quiz </button>
+        <br>
+        <br>
+        <h2 id="totalScore" class="text-info"></h2>
+    </body>
+    
+    <footer>
+        
+        
+    </footer>
+</html>
